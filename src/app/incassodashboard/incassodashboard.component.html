@@ -6,7 +6,7 @@
     Het batch bestand is gemaild met instructies voor on-line invoer naar de penningmeester!
     <br>Het aantal klaar staande transacties = {{aantalTransacties}}.
     <br><small>NB In de mail: klik met de rechter muisknop op de link voor een juiste download!</small>
-    <p>Nieuw: het bestand is zelf ook hier te downloaden <a href='https://www.toernooiklapper.nl/{{fname}}' download>bestand</a>
+    <p>Nieuw: het bestand is zelf ook hier te downloaden <a href='https://www.toernooiklapper.nl/inc-ng/{{fname}}' download>bestand</a>
     </p>
   </mat-card>
 </div> 
@@ -55,7 +55,7 @@
     Mailadres is <strong>verplicht</strong>
   </mat-error>
 </mat-form-field>
-<mat-checkbox formControlName="herhaalbaar">Periodiek herhaalbare transacties (test!)</mat-checkbox>
+<small><mat-checkbox formControlName="herhaalbaar">Indicatie meegeven voor periodiek herhaalbaar (test!)</mat-checkbox></small>
 <br><br>
 </div>
 <div *ngIf="!isProef && aantalTransacties == 0" >
