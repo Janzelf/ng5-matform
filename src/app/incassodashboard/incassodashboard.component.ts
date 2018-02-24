@@ -93,24 +93,6 @@ export class IncassoDashboardComponent implements OnInit, OnDestroy {
      }
     );
   }
-  setNValue() {
-    this.incassoform.setValue(
-      {
-        gegevens : {
-          incassant: "Sportcentrum Nieuwkoop",
-          rekeningnr :  "NL29RABO0149945043",
-          incid :  "NL36ZZZ273247750000",
-          pemail :  "j.g.de.lint@xs4all.nl",
-          herhaalbaar : false
-        },
-        proefgegevens: {
-          proefaccount :  "Janzelf",
-          rekeningnrt :  "NL43ingb0000533522",
-        }
-      }
-    )
-    console.log('incassoform.controls:',this.incassoform.controls);
-  }  
   ngOnDestroy() {}
   onSubmit()  { 
     this.submitted = true;

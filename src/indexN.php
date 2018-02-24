@@ -115,7 +115,7 @@ function checkTransactions()
         $_SESSION['aantal'] = 0;
         $_SESSION['totaalbedrag'] = 0;
         $_SESSION['IBANfouten'] = [];
-    return;
+        return;
     }
     $IBANfouten = [];
     $aantal = 0;
@@ -151,7 +151,7 @@ function maak($postdata)
 
 // create new instance
     $gegevens = json_decode($postdata["gegevens"],true);
-    testMail(__LINE__ . nl2br(print_r($gegevens,true)));
+//    testMail(__LINE__ . nl2br(print_r($gegevens,true)));
     $creator = new \SepaXmlCreator\SepaXmlCreator();
     $rekeningnr = strtoupper($gegevens["rekeningnr"]);
     $incassant = $gegevens['incassant'];
@@ -161,8 +161,11 @@ function maak($postdata)
     $creator->setAccountValues($incassant, $rekeningnr, toBic($rekeningnr));
     $toernooinaam = $_SESSION['toernooinaam'];
 
-
-    if (!empty($gegevens["herhaalbaar"])) $creator->setIsFolgelastschrift();
+    $herh = "";
+    if (!empty($gegevens["herhaalbaar"])) {
+        $creator->setIsFolgelastschrift();
+        $herh = "<li><small>Herhaalbaar is aangevinkt (test)</small></li>";
+    }
 
 //Add creditor identifier you get from
     $creator->setCreditorIdentifier($incid);
@@ -214,14 +217,15 @@ function maak($postdata)
     $body = <<<TAG
 <body style="background-color: LightSkyBlue">
 <h4>$toernooinaam</h4>
-<p>Het gegenereerde bestand is hier te downloaden: <a href='https://www.toernooiklapper.nl/inc-ng/$fname' download>incassobestand</a>
-<br><small>Klik met de rechtermuisknop op  de link!</small></p>
+<p>Het gegenereerde bestand is hier te downloaden: <a href='https://www.toernooiklapper.nl/inc-ng/$fname' download>incassobestand</a> (<small>klik met de  rechtermuisknop!</small>)
+</p>
 <p>Sla dit bestand op in uw PC en voer het binnen drie dagen in bij uw online
 bankieren!</p>De volgende gegevens zijn gebruikt (check deze gegevens met uw contract!):
 <ul>
 <li>Tenaamstelling rekening: $incassant</li>
 <li>Rekening nummer: $rekeningnr</li>
 <li>Incassanten Id: $incid</li>
+$herh
 </ul>
 <p>Het aantal transacties = $aantal, het totale bedrag € $totaalbedrag.<br>
 TAG;
@@ -303,6 +307,10 @@ function maaktest($postdata)
     $rekeningnrt = strtoupper($proefgegevens['rekeningnrt']);
     $creator->setAccountValues($incassant, $rekeningnr, toBic($rekeningnr));
     if (!empty($_SESSION['toernooinaam'])) $toernooinaam = $_SESSION['toernooinaam'];
+    if (!empty($gegevens["herhaalbaar"])) {
+        $creator->setIsFolgelastschrift();
+        $herh = "<li><small>Herhaalbaar is aangevinkt (test)</small></li>";
+    }
 
 
 //Add creditor identifier you get from
@@ -343,14 +351,15 @@ $sepaxml = $creator->generateSepaDirectDebitXml();
     $body = <<<TAG
 <body style="background-color: LightSkyBlue">
 <h4>$toernooinaam</h4>
-<p>Het gemaakte bestand is hier te downloaden: <a href='https://www.toernooiklapper.nl/inc-ng/$fname' download>incassobestand</a></p>
-<p>Sla dit bestand op in uw PC (<small>klik met de  rechtermuisknop!</small>) en voer het binnen drie dagen in bij uw online
+<p>Het gemaakte bestand is hier te downloaden: <a href='https://www.toernooiklapper.nl/inc-ng/$fname' download>incassobestand</a> (<small>klik met de  rechtermuisknop!</small>)</p>
+<p>Sla dit bestand op in uw PC en voer het binnen drie dagen in bij uw online
 bankieren!</p>
 De volgende gegevens zijn gebruikt (check deze gegevens met uw contract!):
 <ul>
 <li>Tenaamstelling rekening: $incassant</li>
 <li>Rekening nummer: $rekeningnr</li>
 <li>Incassanten Id: $incid</li>
+$herh
 </ul>
 Deze proef incasseert $totaalbedrag € van de rekening van de proefpersoon. Als deze transactie goed werkt zal
 de echte incasso ook vlot verlopen omdat dezelfde instellingen gebruikt worden.
