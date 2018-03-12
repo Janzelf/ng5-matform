@@ -4,7 +4,9 @@
   <mat-card>
     <h4>Incasso bestand aangemaakt</h4>
     Het batch bestand is gemaild met instructies voor on-line invoer naar de penningmeester!
-    <br>Het aantal klaar staande transacties = {{aantalTransacties}}.
+    <div *ngIf="isProef">
+      <br>Het aantal klaar staande transacties = {{aantalTransacties}}.
+    </div>
     <br><small>NB In de mail: klik met de rechter muisknop op de link voor een juiste download!</small>
     <p>Nieuw: het bestand is zelf ook hier te downloaden <a href='https://www.toernooiklapper.nl/inc-ng/{{fname}}' download>bestand</a>
     </p>
@@ -55,7 +57,8 @@
     Mailadres is <strong>verplicht</strong>
   </mat-error>
 </mat-form-field>
-<small><mat-checkbox formControlName="herhaalbaar">Indicatie meegeven voor periodiek herhaalbaar (test!)</mat-checkbox></small>
+<br>
+<small><mat-checkbox formControlName="herhaalbaar">Doorlopende incasso.</mat-checkbox></small>
 <br><br>
 </div>
 <div *ngIf="!isProef && aantalTransacties == 0" >

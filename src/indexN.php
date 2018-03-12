@@ -368,7 +368,7 @@ TAG;
     $mail = new PHPMailer();
     $mail->CharSet = "UTF-8";
     $mail->Subject = "Incassobestand";
-    $mail->AddAddress($postdata["gegevens"]["pemail"], "Penningmeester");
+    $mail->AddAddress($gegevens["pemail"], "Penningmeester");
     $mail->AddBCC("support@toernooiklapper.nl", "Test");
 //    $mail->AddStringAttachment($sepaxml, "separun".$postdata["runid"].".xml");
     $mail->Body = $body;
